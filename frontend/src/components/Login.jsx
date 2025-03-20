@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
-
+import { AuthContext } from "../context/AuthContext";
 const Login = () => {
+  const {login,registerUser}=useContext(AuthContext)
   const [logIn, setLogIn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Email:", email, "Password:", password);
-  };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 bg-[#354a2f] ">
@@ -34,7 +32,7 @@ const Login = () => {
             <>
               <h2 className="my-6 text-center text-2xl font-bold ">SIGN IN</h2>
               <form
-                onSubmit={handleSubmit}
+                onSubmit={()=>login(email,password)}
                 className="space-y-4 w-full flex flex-col justify-center items-center m-3  "
               >
                 <input
@@ -92,15 +90,15 @@ const Login = () => {
                 CREATE ACCOUNT
               </h2>
               <form
-                onSubmit={handleSubmit}
+                onSubmit={registerUser(name,email,password)}
                 className="space-y-4 w-full flex flex-col justify-center items-center m-3  "
               >
                 <input
                   className="w-full rounded-lg border border-gray-200 shadow-sm p-2 focus:border-gray-400 focus:outline-none"
                   placeholder="Name"
                   type="name"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
                 />
                 <input

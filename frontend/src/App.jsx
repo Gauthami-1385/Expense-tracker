@@ -1,16 +1,14 @@
 
 import './App.css'
 import Login from './components/Login'
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
  
 
   return (
     <AuthProvider>
-    <Login />
-    
-        
-     
+    <Login />  
     </AuthProvider>
   )
 }
