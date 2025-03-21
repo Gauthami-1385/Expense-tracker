@@ -7,8 +7,8 @@ export default {
     theme: {
       extend: {
         color:{
-          'olive':'#354a2f',
-          'light-olive':'#5c724a','cream':'#f5f5d5'
+          'bg1':'#141326','bg2':'#54202E'
+
         }
       },
     },

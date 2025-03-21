@@ -9,9 +9,11 @@ bcrypt=Bcrypt()
 @auth_bp.route('/register',methods=['POST'])
 def register():
     data=request.get_json()
+    name=data.get('name')
     username=data.get('username')
     password=data.get('password')
     user_data= {
+        'name':name,
         "username":username,
         'password':password
     }
@@ -20,10 +22,10 @@ def register():
 @auth_bp.route('/login',methods=['POST'])
 def login():
     data=request.get_json()
-    username=data.get('username')
+    email=data.get('email')
     password=data.get('password')
     user_data= {
-        "username":username,
+        "username":email,
         'password':password
     }
     print(data)

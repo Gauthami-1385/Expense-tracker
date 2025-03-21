@@ -2,12 +2,11 @@ import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 const Login = () => {
-  const {login,registerUser}=useContext(AuthContext)
-  const [logIn, setLogIn] = useState(true);
+  const { login, registerUser } = useContext(AuthContext);
+  const [logIn, setLogIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 bg-[#354a2f] ">
@@ -32,7 +31,12 @@ const Login = () => {
             <>
               <h2 className="my-6 text-center text-2xl font-bold ">SIGN IN</h2>
               <form
-                onSubmit={()=>login(email,password)}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log(email, password);
+
+                  login(email, password);
+                }}
                 className="space-y-4 w-full flex flex-col justify-center items-center m-3  "
               >
                 <input
@@ -78,19 +82,23 @@ const Login = () => {
         </motion.div>
 
         {/* Right Section (Sign Up) */}
-        <div
-          className="relative z-10  md:w-1/2 flex flex-col items-center justify-center item-center px-6 py-8"
-        >
+        <div className="relative z-10  md:w-1/2 flex flex-col items-center justify-center item-center px-6 py-8">
           {!logIn ? (
             <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 100 }}
-            transition={{ duration: 0.5, delay: 0.5 }} className="flex flex-col justify-center items-center">
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 100 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="flex flex-col justify-center items-center"
+            >
               <h2 className="my-6 text-center text-2xl font-bold ">
                 CREATE ACCOUNT
               </h2>
               <form
-                onSubmit={registerUser(name,email,password)}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log(name, email, password);
+                  registerUser(name, email, password);
+                }}
                 className="space-y-4 w-full flex flex-col justify-center items-center m-3  "
               >
                 <input
@@ -127,9 +135,11 @@ const Login = () => {
             </motion.div>
           ) : (
             <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 100 }}
-            transition={{ duration: 0.5, delay: 0.5 }} className="flex flex-col justify-center items-center">
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 100 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="flex flex-col justify-center items-center"
+            >
               <h2 className="text-3xl font-bold text-white text-center mb-8 ">
                 Welcome Back!
               </h2>

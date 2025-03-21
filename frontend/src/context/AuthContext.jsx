@@ -1,9 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import { base_url } from "../constants";
-
+import {toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";  
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();  
+
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   useEffect(() => {
@@ -11,30 +14,33 @@ export const AuthProvider = ({ children }) => {
       setUser({ email: "" });
     }
   }, [token]);
-  const login =  async (email, password) => {
-    console.log('hi')
+
+  const login = async (email, password) => {
+  
     try {
-      const res = await fetch(`${base_url}/login`, {
-        method: POST,
+      const res = await fetch(`${base_url}/auth/login`, {
+        method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({  email, password }),
+        body: JSON.stringify({ email, password }),
       });
-  
-      const data=await res.json()
-      if(!res.ok){
-          throw new Error(data.message||'Registration Failed')
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Registration Failed");
       }
-      if (response.token) {
-        setToken(response.token);
-        setUser(response.user);
-        localStorage.setItem("token", response.token);
+      console.log(res,'eea')
+      if (res.ok) {
+        setToken(res.token);
+        setUser(res.user);
+        localStorage.setItem("token", res.token);
+        toast('login successful')
+        navigate("/dashboard");
       }
-    } catch (e) {console.log(e);}
+    } catch (e) {
+      console.log(e);
+    }
   };
-  
-  
-  
- 
+
   const logout = async () => {
     try {
       setToken(response.token);
@@ -44,24 +50,33 @@ export const AuthProvider = ({ children }) => {
       console.log(e);
     }
   };
+
   const registerUser = async (name, email, password) => {
+    console.log(name,email,password)
+    console.log(`${base_url}/auth/register`)
     try {
-      const res = await fetch(`${base_url}/register`, {
-        method: POST,
+      console.log('hi')
+      const res = await fetch(`${base_url}/auth/register`, {
+        method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-  
-      const data=await res.json()
-      if(!res.ok){
-          throw new Error(data.message||'Registration Failed')
+
+      const data = await res.json();
+      if (!res.ok) {
+        toast(res.message)
+        throw new Error(data.message || "Registration Failed");
       }
-    } catch (e) {}
+      else{
+        toast('Welcome')
+      }
+    } catch (e) {
+      console.log(e)
+    }
   };
-  
-    
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout,registerUser }}>
+    <AuthContext.Provider value={{ user, token, login, logout, registerUser }}>
       {children}
     </AuthContext.Provider>
   );
